@@ -14,6 +14,9 @@ const app = express();
 const publisher = createClient();
 publisher.connect();
 
+const subscriber = createClient();
+subscriber.connect();
+
 app.use(cors());
 app.use(express.json());
 
@@ -32,6 +35,7 @@ app.post("/deploy", async (req, res) => {
     });
 
     publisher.lPush("build-queue", id);
+    publisher.hSet("status", id, "uploaded");
 
     res.json({
       id: id,
@@ -42,6 +46,13 @@ app.post("/deploy", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+app.get('/status', async (req, res) => {
+  const id = req.query.id;
+  const response = await subscriber.hGet("status", id as string);
+  res.json({ status: response }); 
+
+})
 
 app.listen(3000, () => {
   console.log("App Listening On Port: 3000");

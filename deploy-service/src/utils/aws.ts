@@ -10,7 +10,6 @@ const s3 = new S3({
 });
 
 export async function downloadS3Folder(prefix: string) {
-    console.log("prefix", prefix);
     const allFiles = await s3
         .listObjectsV2({
             Bucket: "babar-vercel-bucket",
@@ -47,28 +46,13 @@ export async function downloadS3Folder(prefix: string) {
     await Promise.all(allPromises?.filter((x) => x !== undefined));
 }
 
-
-export async function copyFinalDist(id: string) { 
-    
-    const folderPath = path.join(__dirname, '..' ,`output/${id}/dist`);
+export async function copyFinalDist(id: string) {
+    const folderPath = path.join(__dirname, "..", `output/${id}/dist`);
     const allFiles = getAllFiles(folderPath);
     allFiles.forEach((file) => {
-        uploadFile(`dist/${id}/` + file.slice(folderPath.length + 1), file)
-    })
-
+        uploadFile(`dist/${id}/` + file.slice(folderPath.length + 1), file);
+    });
 }
-
-const uploadFile = async (fileName: string, localFilePath: string) => {
-    const fileContent = fs.readFileSync(localFilePath);
-    const response = await s3
-        .upload({
-            Body: fileContent,
-            Bucket: "babar-vercel-bucket",
-            Key: fileName.replace(/\\/g, "/"),
-        })
-        .promise();
-    console.log(response);
-};
 
 const getAllFiles = (folderPath: string) => {
     let response: string[] = [];
@@ -82,7 +66,17 @@ const getAllFiles = (folderPath: string) => {
             response.push(fullFilePath);
         }
     });
-
     return response;
 };
 
+const uploadFile = async (fileName: string, localFilePath: string) => {
+    const fileContent = fs.readFileSync(localFilePath);
+    const response = await s3
+        .upload({
+            Body: fileContent,
+            Bucket: "babar-vercel-bucket",
+            Key: fileName.replace(/\\/g, "/"),
+        })
+        .promise();
+    console.log("upload file response ->" ,response);
+};

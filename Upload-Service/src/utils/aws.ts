@@ -17,5 +17,5 @@ export const uploadFile = async (fileName: string, localFilePath: string) => {
         Key: fileName.replace(/\\/g, '/'),
     })
     .promise();
-  console.log(response);
+  console.log("Upload File -->" ,response);
 };
