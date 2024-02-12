@@ -14,7 +14,7 @@ export function Landing() {
   const [deployed, setDeployed] = useState(false);
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
+    <main className="flex flex-col items-center justify-center mt-28 bg-gray-50 dark:bg-gray-900 p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-xl">Deploy your GitHub Repository</CardTitle>
@@ -60,11 +60,11 @@ export function Landing() {
         <CardContent>
           <div className="space-y-2">
             <Label htmlFor="deployed-url">Deployed URL</Label>
-            <Input id="deployed-url" readOnly type="url" value={`http://${uploadId}.dev.100xdevs.com:3001/index.html`} />
+            <Input id="deployed-url" readOnly type="url" value={`http://${uploadId}.localhost:3001/index.html`} />
           </div>
           <br />
           <Button className="w-full" variant="outline">
-            <a href={`http://${uploadId}.10kdevs.com/index.html`} target="_blank">
+            <a href={`http://${uploadId}.localhost:3001/index.html`} target="_blank">
               Visit Website
             </a>
           </Button>
