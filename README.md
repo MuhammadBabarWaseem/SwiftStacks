@@ -11,7 +11,7 @@
   <li>Redis For Queuing</li>
 </ul>
 
-### For Backend
+### For Frontend
 <ul>
   <li>React.js</li>
   <li>ShadCN</li>
