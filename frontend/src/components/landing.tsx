@@ -14,16 +14,16 @@ export function Landing() {
   const [deployed, setDeployed] = useState(false);
 
   return (
-    <main className="flex flex-col items-center justify-center mt-28 bg-gray-50 dark:bg-gray-900 p-4">
+    <main className="flex flex-col items-center justify-center mt-28  pb-52 dark:bg-gray-900 p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-xl">Deploy your GitHub Repository</CardTitle>
+          <CardTitle className="text-xl font-mono">Deploy your GitHub Repository</CardTitle>
           <CardDescription>Enter the URL of your GitHub repository to deploy it</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="github-url">GitHub Repository URL</Label>
+              <Label htmlFor="github-url" className="font-mono">GitHub Repository URL</Label>
               <Input 
                 onChange={(e) => {
                   setRepoUrl(e.target.value);
@@ -54,12 +54,12 @@ export function Landing() {
       </Card>
       {deployed && <Card className="w-full max-w-md mt-8">
         <CardHeader>
-          <CardTitle className="text-xl">Deployment Status</CardTitle>
+          <CardTitle className="text-xl font-mono">Deployment Status</CardTitle>
           <CardDescription>Your website is successfully deployed!</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
-            <Label htmlFor="deployed-url">Deployed URL</Label>
+            <Label htmlFor="deployed-url" className="font-mono">Deployed URL</Label>
             <Input id="deployed-url" readOnly type="url" value={`http://${uploadId}.localhost:3001/index.html`} />
           </div>
           <br />
