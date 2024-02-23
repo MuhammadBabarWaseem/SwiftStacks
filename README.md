@@ -1,4 +1,4 @@
-# Its a small deployment web project
+# Compact Web Deployment Project
 
 ## Tech Stack Used
 
@@ -8,7 +8,7 @@
   <li>Express</li>
   <li>AWS SDK</li>
   <li>Cloudflare</li>
-  <li>Redis For Queuing</li>
+  <li>Redis</li>
 </ul>
 
 ### For Frontend
