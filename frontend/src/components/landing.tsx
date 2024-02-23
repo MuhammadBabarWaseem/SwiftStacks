@@ -1,9 +1,15 @@
-import { CardTitle, CardDescription, CardHeader, CardContent, Card } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { useState } from "react"
-import axios from "axios"
+import {
+  CardTitle,
+  CardDescription,
+  CardHeader,
+  CardContent,
+  Card,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import axios from "axios";
 
 const BACKEND_UPLOAD_URL = "http://localhost:3000";
 
@@ -17,59 +23,95 @@ export function Landing() {
     <main className="flex flex-col items-center justify-center mt-28  pb-52 dark:bg-gray-900 p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-xl font-mono">Deploy your GitHub Repository</CardTitle>
-          <CardDescription>Enter the URL of your GitHub repository to deploy it</CardDescription>
+          <CardTitle className="text-xl font-mono">
+            Deploy your GitHub Repository
+          </CardTitle>
+          <CardDescription>
+            Enter the URL of your GitHub repository to deploy it
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="github-url" className="font-mono">GitHub Repository URL</Label>
-              <Input 
+              <Label htmlFor="github-url" className="font-mono">
+                GitHub Repository URL
+              </Label>
+              <Input
                 onChange={(e) => {
                   setRepoUrl(e.target.value);
-                }} 
-                placeholder="https://github.com/username/repo" 
+                }}
+                placeholder="https://github.com/username/repo"
               />
             </div>
-            <Button onClick={async () => {
-              setUploading(true);
-              const res = await axios.post(`${BACKEND_UPLOAD_URL}/deploy`, {
-                repoUrl: repoUrl
-              });
-              setUploadId(res.data.id);
-              setUploading(false);
-              const interval = setInterval(async () => {
-                const response = await axios.get(`${BACKEND_UPLOAD_URL}/status?id=${res.data.id}`);
+            <Button
+              onClick={async () => {
+                setUploading(true);
+                const res = await axios.post(`${BACKEND_UPLOAD_URL}/deploy`, {
+                  repoUrl: repoUrl,
+                });
+                setUploadId(res.data.id);
+                setUploading(false);
+                const interval = setInterval(async () => {
+                  const response = await axios.get(
+                    `${BACKEND_UPLOAD_URL}/status?id=${res.data.id}`
+                  );
+                  console.log("res data", response.data);
 
-                if (response.data.status === "deployed") {
-                  clearInterval(interval);
-                  setDeployed(true);
-                }
-              }, 3000)
-            }} disabled={uploadId !== "" || uploading} className="w-full" type="submit">
-              {uploadId ? `Deploying (${uploadId})` : uploading ? "Uploading..." : "Upload"}
+                  if (response.data.status === "deployed") {
+                    clearInterval(interval);
+                    setDeployed(true);
+                  }
+                }, 3000);
+              }}
+              disabled={uploadId !== "" || uploading}
+              className={`w-full ${deployed ? "bg-green-500" : ""}`}
+              type="submit"
+            >
+              {uploadId
+                ? `Deploying (${uploadId})`
+                : uploading
+                ? "Uploading..."
+                : deployed
+                ? "Deployed"
+                : "Upload"}
             </Button>
           </div>
         </CardContent>
       </Card>
-      {deployed && <Card className="w-full max-w-md mt-8">
-        <CardHeader>
-          <CardTitle className="text-xl font-mono">Deployment Status</CardTitle>
-          <CardDescription>Your website is successfully deployed!</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            <Label htmlFor="deployed-url" className="font-mono">Deployed URL</Label>
-            <Input id="deployed-url" readOnly type="url" value={`http://${uploadId}.localhost:3001/index.html`} />
-          </div>
-          <br />
-          <Button className="w-full" variant="outline">
-            <a href={`http://${uploadId}.localhost:3001/index.html`} target="_blank">
-              Visit Website
-            </a>
-          </Button>
-        </CardContent>
-      </Card>}
+      {deployed && (
+        <Card className="w-full max-w-md mt-8">
+          <CardHeader>
+            <CardTitle className="text-xl font-mono">
+              Deployment Status
+            </CardTitle>
+            <CardDescription>
+              Your website is successfully deployed!
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <Label htmlFor="deployed-url" className="font-mono">
+                Deployed URL
+              </Label>
+              <Input
+                id="deployed-url"
+                readOnly
+                type="url"
+                value={`http://${uploadId}.localhost:3001/index.html`}
+              />
+            </div>
+            <br />
+            <Button className="w-full" variant="outline">
+              <a
+                href={`http://${uploadId}.localhost:3001/index.html`}
+                target="_blank"
+              >
+                Visit Website
+              </a>
+            </Button>
+          </CardContent>
+        </Card>
+      )}
     </main>
-  )
+  );
 }
